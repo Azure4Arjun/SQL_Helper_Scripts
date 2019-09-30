@@ -38,14 +38,13 @@ FROM
                                 on medfam.media_set_id = medset.media_set_id
 
 WHERE 
-bkset.database_name IN ('YourDBNameHere') AND --('AX2009EeuLive', 'AX2009AmeLive', 'AX2009ApaLive', 'AX2009StdLive') AND 
+bkset.database_name IN ('YourDBNameHere') AND 
 --bkset.type = 'D' AND
 --and       
 --      --put the date between which you want to find details of backup    
 bkset.backup_finish_date > (DATEADD(DAY, -14, GETDATE())) --between '2016-01-03 05:31:30.000' and '2016-01-04 09:22:29.000'
 --AND bkset.is_snapshot = 0
 --AND medfam.physical_device_name NOT LIKE 'G:\Backup\%'
-
 
 ORDER BY
                 bkset.backup_finish_date DESC
