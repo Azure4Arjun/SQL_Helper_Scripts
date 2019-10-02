@@ -48,6 +48,7 @@ FROM
 INNER JOIN		sys.trace_events te on tt.eventclass = te.trace_event_id	
 WHERE			
 --				tt.EventClass IN (155, 156, 157) and tt.EventSubClass = 1
+-- to see all Events: SELECT * FROM sys.trace_events
 				te.name IN ('FT:Crawl Stopped','FT:Crawl Started', 'FT:Crawl Aborted')
 ORDER BY		tt.StartTime DESC
 

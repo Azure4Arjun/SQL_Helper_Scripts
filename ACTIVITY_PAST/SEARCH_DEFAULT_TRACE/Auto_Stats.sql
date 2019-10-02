@@ -27,32 +27,28 @@ SELECT [FileName] = SUBSTRING([row], 37, 400) FROM #cmdShellResults WHERE SUBSTR
 SELECT @OldestTraceFilePath = @TraceDirPath+'\'+(SELECT TOP 1 [FileName] FROM FileListing)
 
 
---Auto Stats, Indicates an automatic updating of index statistics has occurred.
-/*
-The Default trace does not include information on Auto Statistics event, 
-but you can add this event to be captured by using the sp_trace_setevent stored procedure. 
-The trace event id is 58. It important to say that the information for this event can also be queried 
-from the sys.dm_db_stats_properties DMF or Extended Events. 
-Checking event details of Auto Statistics indicates automatic updating of index statistics that have occurred.
+--Security Audit: Audit Backup/Restore Event
+SELECT 
+				  tt.DatabaseName
+				, tt.FileName
+				, tt.ObjectID
+				, tt.ObjectType
+				, tt.ObjectName
+				, tt.TextData
+				, tt.Duration
+				, tt.StartTime
+				, tt.EndTime
+				, tt.SPID
+				, tt.ApplicationName
+				, tt.LoginName
+				, te.name
+FROM 
+				sys.fn_trace_gettable(@OldestTraceFilePath, DEFAULT) AS tt
+--				sys.fn_trace_gettable(@NewestTraceFilePath, DEFAULT) AS tt -- <= for comparison if we search only the newest trace file
+INNER JOIN		sys.trace_events te on tt.eventclass = te.trace_event_id	
+WHERE			
+--				tt.EventClass IN (58) and tt.EventSubClass = 1
+-- to see all Events: SELECT * FROM sys.trace_events
+				te.name IN ('Auto Stats')
+ORDER BY		tt.StartTime DESC
 
-DECLARE @rc INT 
-DECLARE @TraceID INT 
-DECLARE @maxFileSize bigint 
-DECLARE @fileName NVARCHAR(128) 
-DECLARE @on bit 
--- Set values 
-SET @maxFileSize = 5 
-SET @fileName = @NewestTraceFilePath
-SET @on = 1 
-
-EXEC @rc = sp_trace_create @TraceID output, 0, @fileName, @maxFileSize, NULL 
-EXEC sp_trace_setevent @TraceID, 58,  1, @on 
-
-*/
-
-SELECT TextData, ObjectID, ObjectName, IndexID, Duration, StartTime, EndTime, 
-SPID, ApplicationName, LoginName  
-FROM sys.fn_trace_gettable(@OldestTraceFilePath, DEFAULT)
---FROM sys.fn_trace_gettable(@NewestTraceFilePath, DEFAULT) -- <= for comparison if we search only the newest trace file
-WHERE EventClass IN (58)
-ORDER BY StartTime DESC

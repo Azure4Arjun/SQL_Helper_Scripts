@@ -27,10 +27,26 @@ SELECT [FileName] = SUBSTRING([row], 37, 400) FROM #cmdShellResults WHERE SUBSTR
 SELECT @OldestTraceFilePath = @TraceDirPath+'\'+(SELECT TOP 1 [FileName] FROM FileListing)
 
 
---Security Audit: Audit Backup Event
-SELECT DatabaseName, TextData, Duration, StartTime, EndTime,
-SPID, ApplicationName, LoginName   
-FROM sys.fn_trace_gettable(@OldestTraceFilePath, DEFAULT)
---FROM sys.fn_trace_gettable(@NewestTraceFilePath, DEFAULT) -- <= for comparison if we search only the newest trace file
-WHERE EventClass IN (115) and EventSubClass=1
-ORDER BY StartTime DESC
+--Security Audit: Audit Backup/Restore Event
+SELECT 
+				  tt.DatabaseName
+				, tt.FileName
+				, tt.TextData
+				, tt.Duration
+				, tt.StartTime
+				, tt.EndTime
+				, tt.SPID
+				, tt.ApplicationName
+				, tt.LoginName
+				, te.name  
+FROM 
+				sys.fn_trace_gettable(@OldestTraceFilePath, DEFAULT) AS tt
+--				sys.fn_trace_gettable(@NewestTraceFilePath, DEFAULT) AS tt -- <= for comparison if we search only the newest trace file
+INNER JOIN		sys.trace_events te on tt.eventclass = te.trace_event_id	
+WHERE			
+--				tt.EventClass IN (92, 93) and tt.EventSubClass = 1
+-- to see all Events: SELECT * FROM sys.trace_events
+				te.name IN ('Data File Auto Grow','Log File Auto Grow')
+ORDER BY		tt.StartTime DESC
+
+

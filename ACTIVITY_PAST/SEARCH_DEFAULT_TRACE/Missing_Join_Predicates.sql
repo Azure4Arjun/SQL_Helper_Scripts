@@ -27,9 +27,28 @@ SELECT [FileName] = SUBSTRING([row], 37, 400) FROM #cmdShellResults WHERE SUBSTR
 SELECT @OldestTraceFilePath = @TraceDirPath+'\'+(SELECT TOP 1 [FileName] FROM FileListing)
 
 
---Errors and Warnings: Missing Join Predicate
-SELECT DatabaseName,TextData, Duration, StartTime, EndTime, SPID, ApplicationName, LoginName  
-FROM sys.fn_trace_gettable(@OldestTraceFilePath, DEFAULT)
---FROM sys.fn_trace_gettable(@NewestTraceFilePath, DEFAULT) -- <= for comparison if we search only the newest trace file
-WHERE EventClass IN (80)
-ORDER BY  StartTime DESC
+--Security Audit: Audit Backup/Restore Event
+SELECT 
+				  tt.DatabaseName
+				, tt.FileName
+				, tt.ObjectID
+				, tt.ObjectType
+				, tt.ObjectName
+				, tt.TextData
+				, tt.Duration
+				, tt.StartTime
+				, tt.EndTime
+				, tt.SPID
+				, tt.ApplicationName
+				, tt.LoginName
+				, te.name
+FROM 
+				sys.fn_trace_gettable(@OldestTraceFilePath, DEFAULT) AS tt
+--				sys.fn_trace_gettable(@NewestTraceFilePath, DEFAULT) AS tt -- <= for comparison if we search only the newest trace file
+INNER JOIN		sys.trace_events te on tt.eventclass = te.trace_event_id	
+WHERE			
+--				tt.EventClass IN (22) and tt.EventSubClass = 1
+-- to see all Events: SELECT * FROM sys.trace_events
+				te.name IN ('Missing Join Predicate')
+ORDER BY		tt.StartTime DESC
+
