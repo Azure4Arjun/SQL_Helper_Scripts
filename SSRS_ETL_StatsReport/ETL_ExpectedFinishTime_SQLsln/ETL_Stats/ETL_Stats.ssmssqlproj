@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ETL_Stats">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="WYNWIQDB001023.MPC.AON.NET,13164:AONNET\A0749986">
+          <Created>2019-07-12T10:37:15.1515395+02:00</Created>
+          <Type>SQL</Type>
+          <Server>WYNWIQDB001023.MPC.AON.NET,13164</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>DWHSupport_Audit</InitialDB>
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="qv.ColumnList.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ColumnList.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.dim_aon_system.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.dim_aon_system.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ETL_Stats_AvgFinishTime_System.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ETL_Stats_AvgFinishTime_System.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ETL_Stats_AvgFinishTime_Task.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ETL_Stats_AvgFinishTime_Task.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ETL_Stats_LastRunTaskList.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ETL_Stats_LastRunTaskList.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ETL_Stats_LastRunTaskList_DUMMY.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ETL_Stats_LastRunTaskList_DUMMY.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ETL_Stats_LastRunTaskList_ForTestingOnly.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ETL_Stats_LastRunTaskList_ForTestingOnly.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ETL_Stats_WinnersAndLosers.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ETL_Stats_WinnersAndLosers.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.LogTable.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.LogTable.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.LogTable_ACIA.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.LogTable_ACIA.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.TempTable.Table.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.TempTable.Table.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ufn_CalculateExpectedFinishTime.UserDefinedFunction.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ufn_CalculateExpectedFinishTime.UserDefinedFunction.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ufn_GetLastRunID_PerSystemKey.UserDefinedFunction.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ufn_GetLastRunID_PerSystemKey.UserDefinedFunction.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ufn_GetLastRunID_PerSystemKey_OnDay.UserDefinedFunction.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ufn_GetLastRunID_PerSystemKey_OnDay.UserDefinedFunction.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ufn_GetSumRecordsPerSecond_PerSystem.UserDefinedFunction.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ufn_GetSumRecordsPerSecond_PerSystem.UserDefinedFunction.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.ufn_GetTaskAvg_PerSystemKey.UserDefinedFunction.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.ufn_GetTaskAvg_PerSystemKey.UserDefinedFunction.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_CalculateAvgPerProcess.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_CalculateAvgPerProcess.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_CalculateAvgPerProcess_OLD.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_CalculateAvgPerProcess_OLD.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_CalculateWinnersAndLosersPerProcess.StoredProcedure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_CalculateWinnersAndLosersPerProcess.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_CalculateWinnersAndLosersPerProcess_OLD.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_CalculateWinnersAndLosersPerProcess_OLD.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_CheckSystemName.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_CheckSystemName.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetDistinctSystemNames_FromWinnersAndLosers.StoredProcedure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetDistinctSystemNames_FromWinnersAndLosers.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetExpectedFinishTime.StoredProcedure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetExpectedFinishTime.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetExpectedFinishTime_AllRunningSystems.StoredProcedure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetExpectedFinishTime_AllRunningSystems.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetExpectedFinishTime_PerSystem.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetExpectedFinishTime_PerSystem.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetExpectedFinishTime_PerSystem_2.StoredProcedure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetExpectedFinishTime_PerSystem_2.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetExpectedFinishTime_PerSystem_3.StoredProcedure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetExpectedFinishTime_PerSystem_3.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetProcessExecHistory.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetProcessExecHistory.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetSystemExecHistory.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetSystemExecHistory.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetSystemKeyFromName.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetSystemKeyFromName.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetSystemNameFromSystemKey.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetSystemNameFromSystemKey.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_GetWinnersAndLosers.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_GetWinnersAndLosers.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_Populate_ETL_Stats_AvgFinishTime_System.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_Populate_ETL_Stats_AvgFinishTime_System.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_Populate_ETL_Stats_AvgFinishTime_Task.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_Populate_ETL_Stats_AvgFinishTime_Task.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_Populate_ETL_Stats_LastRunTaskList.StoredProcedure.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_Populate_ETL_Stats_LastRunTaskList.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_Populate_ETL_Stats_WinnersAndLosers.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_Populate_ETL_Stats_WinnersAndLosers.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="qv.usp_Purge_ETL_StatsFromMidnight.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:WYNWIQDB001023.MPC.AON.NET,13164:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>WYNWIQDB001023.MPC.AON.NET,13164</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>qv.usp_Purge_ETL_StatsFromMidnight.StoredProcedure.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

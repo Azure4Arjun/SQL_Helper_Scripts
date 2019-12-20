@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="WYNWIQDB001023_MPC_AON_NET_13164">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=WYNWIQDB001023.MPC.AON.NET,13164;Initial Catalog=DWHSupport_Audit</ConnectString>
+    <IntegratedSecurity>true</IntegratedSecurity>
+  </ConnectionProperties>
+  <DataSourceID>60dd9189-f212-46df-9c4f-c256b2addbc2</DataSourceID>
+</RptDataSource>
