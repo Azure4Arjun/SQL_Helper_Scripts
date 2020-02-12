@@ -2,9 +2,11 @@
 -- https://msdn.microsoft.com/en-us/library/hh479588(v=sql.110).aspx
 -- Phil Streiff, MCDBA, MCITP, MCSA
 -- 09/08/2016
-
 USE [SSISDB];
 GO
+
+DECLARE @ProjectName NVARCHAR(256) = 'YourProjectNameHere'
+
 SELECT TOP 20 
 	pk.project_id,
 	pj.name 'folder', 
@@ -18,7 +20,7 @@ FROM
 	catalog.packages pk JOIN catalog.projects pj 
 	ON (pk.project_id = pj.project_id)
 WHERE 
-	pj.name IN ('SSIS_DBRestore_Universal_PROD') --AND --'Brokasure_UK-ETL', 'CommonItems-ETL')
+	pj.name IN (@ProjectName)
 	--pj.[last_deployed_time] > DATEADD(DAY, -7, GETDATE())
 ORDER BY
 	pj.last_deployed_time DESC
