@@ -8,7 +8,7 @@ DECLARE @maxLog      INT,
         @searchStr   VARCHAR(256),
         @startDate   DATETIME;
 
-SELECT  @searchStr = 'DBCC CHECKDB', --'BUF', --'Database backed up. Database:'
+SELECT  @searchStr = 'Procedure', --'BUF', --'Database backed up. Database:'
         @startDate = @SQL_Start_Date --'2013-10-01 08:00';
 
 DECLARE @errorLogs   TABLE (
@@ -19,7 +19,7 @@ DECLARE @errorLogs   TABLE (
 DECLARE @logData      TABLE (
     LogDate     DATETIME,
     ProcInfo    VARCHAR(64),
-    LogText     VARCHAR(MAX)   );
+    LogText     VARCHAR(2048)   );
 
 INSERT INTO @errorLogs EXEC sys.sp_enumerrorlogs;
 --SELECT * FROM @errorLogs

@@ -5,7 +5,7 @@
 USE [SSISDB];
 GO
 
-DECLARE @ProjectName NVARCHAR(256) = 'YourProjectNameHere'
+DECLARE @ProjectName NVARCHAR(256) = 'ProjectName'
 
 SELECT TOP 20 
 	pk.project_id,
@@ -14,7 +14,10 @@ SELECT TOP 20
 	pj.deployed_by_name 'deployed_by' ,
 	pj.created_time,
 	pj.last_deployed_time,
-	pj.object_version_lsn
+	pj.object_version_lsn,
+    pk.version_major,
+    pk.version_minor,
+    pk.version_build
 
 FROM
 	catalog.packages pk JOIN catalog.projects pj 
@@ -24,5 +27,6 @@ WHERE
 	--pj.[last_deployed_time] > DATEADD(DAY, -7, GETDATE())
 ORDER BY
 	pj.last_deployed_time DESC
+    , pk.version_build  DESC
 	--folder,
 	--pk.name
