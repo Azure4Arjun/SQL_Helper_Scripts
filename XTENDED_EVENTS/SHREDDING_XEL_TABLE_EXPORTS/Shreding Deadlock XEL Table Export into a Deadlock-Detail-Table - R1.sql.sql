@@ -88,103 +88,6 @@ FETCH NEXT FROM my_cursor INTO @XmlData, @ObjectName
 WHILE @@FETCH_STATUS = 0   
 BEGIN
 --------------------------------------------------------------------------
--- Populate Deadlock-XE-Dump table:
---IF (@ObjectName = 'lock_deadlock_chain')
-    BEGIN
-    ----------------------------------------------------------------------------------
-SELECT @resource_type           = k.value('text[1]','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_type'
-SELECT @mode                    = k.value('text[1]','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'mode'
-SELECT @owner_type              = k.value('text[1]','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'owner_type'
-SELECT @transaction_id          = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'transaction_id'
-SELECT @database_id             = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'database_id'
-SELECT @lockspace_workspace_id  = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'lockspace_workspace_id'
-SELECT @lockspace_sub_id        = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'lockspace_sub_id'
-SELECT @lockspace_nest_id       = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'lockspace_nest_id'
-SELECT @resource_0              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_0'
-SELECT @resource_1              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_1'
-SELECT @resource_2              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_2'
-SELECT @deadlock_id             = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'deadlock_id'
-SELECT @object_id               = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'object_id'
-SELECT @associated_object_id    = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'associated_object_id'
-SELECT @session_id              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'session_id'
-
-    ----------------------------------------------------------------------------------
-    	INSERT [#DeadlockDetails] (
-
-                     [name]                     
-	                ,[timestamp]                
-	                ,[timestamp (UTC)]          
-	                ,[resource_type]            
-	                ,[mode]                     
-	                ,[owner_type]               
-	                ,[transaction_id]           
-	                ,[database_id]              
-	                ,[lockspace_workspace_id]   
-	                --,[lockspace_sub_id]         
-	                --,[lockspace_nest_id]        
-	                --,[resource_0]               
-	                --,[resource_1]               
-	                --,[resource_2]               
-	                --,[deadlock_id]              
-	                --,[object_id]                
-	                --,[associated_object_id]     
-	                --,[session_id]               
-	                --,[resource_owner_type]      
-	                --,[resource_description]     
-	                --,[database_name]            
-	                --,[username]                 
-	                --,[nt_username]              
-	                --,[xml_report]               
-	                --,[deadlock_cycle_id]        
-	                --,[server_name]              
-	                --,[duration]                 
-	                --,[sql_text]                 
-        )
-            SELECT 
-                        [name]                      = @ObjectName
-                    ,   [timestamp]                 = DATEADD(mi, DATEPART(TZ, SYSDATETIMEOFFSET()), (event.data.value('@timestamp', 'varchar(128)')))
-                    ,   [timestamp (UTC)]           = event.data.value('@timestamp', 'varchar(128)')
-                    ,   [resource_type]             = @resource_type
-                    ,   [mode]                      = @mode
-                    ,   [owner_type]                = @owner_type
-                    ,   [transaction_id]            = @transaction_id
-                    ,   [database_id]               = @database_id
-                    ,   [lockspace_workspace_id]    = CONVERT(BIGINT, CONVERT(VARBINARY, @lockspace_workspace_id, 1))
-                    --,   [lockspace_sub_id]          = @lockspace_sub_id
-                    --,   [lockspace_nest_id]         = @lockspace_nest_id
-                    --,   [resource_0]                = @resource_0
-                    --,   [resource_1]                = @resource_1
-                    --,   [resource_2]                = @resource_2
-                    --,   [deadlock_id]               = @deadlock_id
-                    --,   [object_id]                 = @object_id
-                    --,   [associated_object_id]      = @associated_object_id
-                    --,   [session_id]                = @session_id
-
-            FROM    @XmlData.nodes('/event') as event(data)
-
-            SELECT @resource_type           = NULL
-            SELECT @mode                    = NULL
-            SELECT @owner_type              = NULL
-            SELECT @transaction_id          = NULL
-            SELECT @database_id             = NULL
-            SELECT @lockspace_workspace_id  = NULL
-            SELECT @lockspace_sub_id        = NULL
-            SELECT @lockspace_nest_id       = NULL
-            SELECT @resource_0              = NULL
-            SELECT @resource_1              = NULL
-            SELECT @resource_2              = NULL
-            SELECT @deadlock_id             = NULL
-            SELECT @object_id               = NULL
-            SELECT @associated_object_id    = NULL
-            SELECT @session_id              = NULL  
-    END 
---------------------------------------------------------------------------	
-	FETCH NEXT FROM my_cursor INTO @XmlData, @ObjectName   
-END   
-
-CLOSE my_cursor   
-DEALLOCATE my_cursor
-
 SELECT
     [row_number] = ROW_NUMBER() OVER(ORDER BY k.value('@name','VARCHAR(50)')),
     [name] = k.value('@name','VARCHAR(50)'),
@@ -204,6 +107,107 @@ FROM
 --WHERE k.value('text[1]','VARCHAR(50)') IS NOT NULL
 ORDER BY 
     [name]
-    
+--------------------------------------------------------------------------
+-- Populate Deadlock-XE-Dump table:
+--------------------------------------------------------------------------
+SELECT @resource_type           = k.value('text[1]','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_type'
+SELECT @mode                    = k.value('text[1]','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'mode'
+SELECT @owner_type              = k.value('text[1]','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'owner_type'
+SELECT @transaction_id          = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'transaction_id'
+SELECT @database_id             = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'database_id'
+SELECT @lockspace_workspace_id  = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'lockspace_workspace_id'
+SELECT @lockspace_sub_id        = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'lockspace_sub_id'
+SELECT @lockspace_nest_id       = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'lockspace_nest_id'
+SELECT @resource_0              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_0'
+SELECT @resource_1              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_1'
+SELECT @resource_2              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_2'
+SELECT @deadlock_id             = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'deadlock_id'
+SELECT @object_id               = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'object_id'
+SELECT @associated_object_id    = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'associated_object_id'
+SELECT @session_id              = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'session_id'
+SELECT @resource_owner_type     = k.value('text[1]','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_owner_type'
+SELECT @resource_description    = k.value('data(.)','VARCHAR(1024)') FROM @XmlData.nodes('/event/data') p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_description'
+
+    ----------------------------------------------------------------------------------
+    	INSERT [#DeadlockDetails] (
+
+                     [name]                     
+	                ,[timestamp]                
+	                ,[timestamp (UTC)]          
+	                ,[resource_type]            
+	                ,[mode]                     
+	                ,[owner_type]               
+	                ,[transaction_id]           
+	                ,[database_id]              
+	                ,[lockspace_workspace_id]   
+	                ,[lockspace_sub_id]         
+	                ,[lockspace_nest_id]        
+	                ,[resource_0]               
+	                ,[resource_1]               
+	                ,[resource_2]               
+	                ,[deadlock_id]              
+	                ,[object_id]                
+	                ,[associated_object_id]     
+	                ,[session_id]               
+	                ,[resource_owner_type]      
+	                ,[resource_description]     
+	                --,[database_name]            
+	                --,[username]                 
+	                --,[nt_username]              
+	                --,[xml_report]               
+	                --,[deadlock_cycle_id]        
+	                --,[server_name]              
+	                --,[duration]                 
+	                --,[sql_text]                 
+        )
+            SELECT 
+                        [name]                      = @ObjectName
+                    ,   [timestamp]                 = DATEADD(mi, DATEPART(TZ, SYSDATETIMEOFFSET()), (event.data.value('@timestamp', 'varchar(128)')))
+                    ,   [timestamp (UTC)]           = event.data.value('@timestamp', 'varchar(128)')
+                    ,   [resource_type]             = @resource_type
+                    ,   [mode]                      = @mode
+                    ,   [owner_type]                = @owner_type
+                    ,   [transaction_id]            = @transaction_id
+                    ,   [database_id]               = @database_id
+                    ,   [lockspace_workspace_id]    = CONVERT(BIGINT, CONVERT(VARBINARY, @lockspace_workspace_id, 1))
+                    ,   [lockspace_sub_id]          = @lockspace_sub_id
+                    ,   [lockspace_nest_id]         = @lockspace_nest_id
+                    ,   [resource_0]                = @resource_0
+                    ,   [resource_1]                = @resource_1
+                    ,   [resource_2]                = @resource_2
+                    ,   [deadlock_id]               = @deadlock_id
+                    ,   [object_id]                 = @object_id
+                    ,   [associated_object_id]      = @associated_object_id
+                    ,   [session_id]                = @session_id   
+                    ,   [resource_owner_type]       = @resource_owner_type
+                    ,   [resource_description]      = @resource_description
+
+            FROM    @XmlData.nodes('/event') as event(data)
+
+            SELECT @resource_type           = NULL
+            SELECT @mode                    = NULL
+            SELECT @owner_type              = NULL
+            SELECT @transaction_id          = NULL
+            SELECT @database_id             = NULL
+            SELECT @lockspace_workspace_id  = NULL
+            SELECT @lockspace_sub_id        = NULL
+            SELECT @lockspace_nest_id       = NULL
+            SELECT @resource_0              = NULL
+            SELECT @resource_1              = NULL
+            SELECT @resource_2              = NULL
+            SELECT @deadlock_id             = NULL
+            SELECT @object_id               = NULL
+            SELECT @associated_object_id    = NULL
+            SELECT @session_id              = NULL
+            SELECT @resource_owner_type     = NULL
+            SELECT @resource_description    = NULL
+
+--------------------------------------------------------------------------	
+	FETCH NEXT FROM my_cursor INTO @XmlData, @ObjectName   
+END   
+
+CLOSE my_cursor   
+DEALLOCATE my_cursor
+
 
 SELECT * FROM [#DeadlockDetails]

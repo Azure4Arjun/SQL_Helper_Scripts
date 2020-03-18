@@ -9,7 +9,7 @@ DECLARE @maxLog      INT,
         @startDate   DATETIME;
 
 SELECT  @searchStr = 'Procedure', --'BUF', --'Database backed up. Database:'
-        @startDate = @SQL_Start_Date --'2013-10-01 08:00';
+        @startDate = DATEADD(HOUR, -6, @now) --@SQL_Start_Date --'2013-10-01 08:00';
 
 DECLARE @errorLogs   TABLE (
     LogID    INT,

@@ -1,7 +1,7 @@
 USE SSISDB
 GO
 
-DECLARE @PackageName NVARCHAR(256) = 'PackageName.dtsx'
+DECLARE @PackageName NVARCHAR(256) = 'REF_DIP_CustomerAccount_BSL PT001.dtsx'
 DECLARE @DateSince DATE = GETDATE() - 30
 
 SELECT
@@ -30,5 +30,9 @@ WHERE
 -- 2 = RUNNING
 -- 3 = CANCELLED
 -- 5 = ABOUT TO BE RUN
+
+/*
+created (1), running (2), canceled (3), failed (4), pending (5), ended unexpectedly (6), succeeded (7), stopping (8), and completed (9).
+*/
 
 ORDER BY ei.start_time DESC
