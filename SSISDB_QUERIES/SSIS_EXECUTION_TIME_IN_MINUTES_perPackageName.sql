@@ -1,38 +1,41 @@
 USE SSISDB
 GO
 
-DECLARE @PackageName NVARCHAR(256) = 'REF_DIP_CustomerAccount_BSL PT001.dtsx'
-DECLARE @DateSince DATE = GETDATE() - 30
+DECLARE @PackageName NVARCHAR(256) = 'PackageName.dtsx'
+DECLARE @DateSince DATE = GETDATE() - 7
 
 SELECT
     ei.execution_id,
     ei.folder_name,
     ei.project_name,
     ei.package_name,
+    CAST(ei.start_time AS DATETIME2(0))             AS [StartTime],
+    CAST(ei.end_time AS DATETIME2(0))               AS [EndTime],
+    CASE ei.status 
+          WHEN 1 THEN 'Created'
+          WHEN 2 THEN 'Running'
+          WHEN 3 THEN 'Cancelled'
+          WHEN 4 THEN 'Failed'
+          WHEN 5 THEN 'About to run'
+          WHEN 6 THEN 'Ended unexpectedly'
+          WHEN 7 THEN 'Success'
+          WHEN 8 THEN 'Stopping'
+          WHEN 9 THEN 'Completed'
+          ELSE 'Unknown'
+    END AS [Status],
+    DATEDIFF(MINUTE, ei.start_time, ei.end_time)    AS [execution_time (min)],
     ei.environment_folder_name,
     ei.environment_name,
-    CAST(ei.start_time AS datetime) AS start_time,
-    DATEDIFF(MINUTE, ei.start_time, ei.end_time) AS [execution_time (min)],
     ei.executed_as_name,
     ei.use32bitruntime,
     ei.operation_type,
-    ei.created_time,
-    ei.object_type,
-    ei.status
+    CAST(ei.created_time AS DATETIME2(0))             AS [CreatedTime],
+    ei.object_type
+
 
 FROM SSISDB.internal.execution_info ei
 WHERE
         ei.package_name = @PackageName AND
-        ei.start_time >= @DateSince --AND
-
--- status:
--- 4 = FAILED
--- 2 = RUNNING
--- 3 = CANCELLED
--- 5 = ABOUT TO BE RUN
-
-/*
-created (1), running (2), canceled (3), failed (4), pending (5), ended unexpectedly (6), succeeded (7), stopping (8), and completed (9).
-*/
+        ei.start_time >= @DateSince
 
 ORDER BY ei.start_time DESC

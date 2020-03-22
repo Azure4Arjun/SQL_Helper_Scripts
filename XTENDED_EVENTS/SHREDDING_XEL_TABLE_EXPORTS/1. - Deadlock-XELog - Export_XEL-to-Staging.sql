@@ -1,9 +1,5 @@
-USE DeadlockReport
-GO
-
-
 DECLARE 
-        @XtendedEventFilePath NVARCHAR(256) = '/tmp/Deadlock detection*.xel'
+        @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection*.xel'
         , @XmlData XML
         , @ObjectName VARCHAR(128)
 
@@ -37,8 +33,8 @@ DECLARE
 , @duration	                    DECIMAL(20)
 , @sql_text	                    NVARCHAR(1024)
 -----------------------------------------
-DROP TABLE IF EXISTS [#DeadlockDetails]
-CREATE TABLE [#DeadlockDetails] (
+DROP TABLE IF EXISTS [dbo].[DeadlockStaging]
+CREATE TABLE [dbo].[DeadlockStaging] (
 	[name]                      NVARCHAR(1024) NULL,
 	[timestamp]                 DATETIMEOFFSET(7) NULL,
 	[timestamp (UTC)]           DATETIMEOFFSET(7) NULL,
@@ -134,7 +130,7 @@ SELECT @duration                = k.value('data(.)','VARCHAR(1024)')    FROM @Xm
 SELECT @sql_text                = k.value('data(.)', 'VARCHAR(1000)')   FROM @XmlData.nodes('/event/action')               p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'sql_text'
 ----------------------------------------------------------------------------------
 
-    	INSERT [#DeadlockDetails] (
+    	INSERT [dbo].[DeadlockStaging] (
                      [name]                     
 	                ,[timestamp]                
 	                ,[timestamp (UTC)]          
@@ -229,4 +225,35 @@ CLOSE my_cursor
 DEALLOCATE my_cursor
 
 
-SELECT * FROM [#DeadlockDetails] ORDER BY name, transaction_id, deadlock_id, database_name, deadlock_cycle_id
+SELECT 
+    name,
+    CAST(timestamp AS DATETIME2(0)) AS [TimeStamp],
+    CAST([timestamp (UTC)] AS DATETIME2(0)) AS [TimeStamp(UTC)],
+    resource_type,
+    mode,
+    owner_type,
+    transaction_id,
+    database_id,
+    lockspace_workspace_id,
+    lockspace_sub_id,
+    lockspace_nest_id,
+    resource_0,
+    resource_1,
+    resource_2,
+    deadlock_id,
+    object_id,
+    associated_object_id,
+    session_id,
+    resource_owner_type,
+    resource_description,
+    database_name,
+    username,
+    nt_username,
+    xml_report,
+    deadlock_cycle_id,
+    server_name,
+    duration,
+    sql_text 
+FROM [dbo].[DeadlockStaging] 
+ORDER BY 
+timestamp DESC, name, transaction_id, deadlock_id, database_name, deadlock_cycle_id
