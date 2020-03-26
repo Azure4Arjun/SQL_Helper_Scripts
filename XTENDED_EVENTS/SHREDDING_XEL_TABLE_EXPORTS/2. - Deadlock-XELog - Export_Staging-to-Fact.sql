@@ -1,13 +1,13 @@
-USE DMOperations
+USE DeadlockHistory
 GO
 
 SET NOCOUNT ON
 GO
 
-DROP TABLE IF EXISTS [dbo].[DMSSR_Deadlock_Fact_SSISDB];
+DROP TABLE IF EXISTS [dbo].[DeadlockFact];
 GO
 
-CREATE TABLE [dbo].[DMSSR_Deadlock_Fact_SSISDB] (    
+CREATE TABLE [dbo].[DeadlockFact] (    
       [DeadlockID] BIGINT NOT NULL
 	, [DeadlockTime] DATETIME NOT NULL
     , [TransactionTime] DATETIME NULL
@@ -31,11 +31,12 @@ CREATE TABLE [dbo].[DMSSR_Deadlock_Fact_SSISDB] (
     , [WaitResource_2] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
     , [xml_report] XML NULL
 )
-
-DROP TABLE IF EXISTS [#DMSSR_Deadlock_detection.xel]
 GO
 
-CREATE TABLE [#DMSSR_Deadlock_detection.xel] (
+
+DROP TABLE IF EXISTS [#DeadlockStaging]
+
+CREATE TABLE [#DeadlockStaging] (
 	 [name]                                  NVARCHAR(MAX) NULL
 	,[timestamp]                             DATETIMEOFFSET(7) NULL
 	,[timestamp (UTC)]                       DATETIMEOFFSET(7) NULL
@@ -73,7 +74,7 @@ DECLARE my_cursor CURSOR FOR
         
         SELECT DISTINCT
                CONVERT(DATETIME2(0), [timestamp]) AS [timestamp_NoMilliSec]
-        FROM   [DMOperations].[dbo].[DMSSR_Deadlock_detection_SSISDB.xel]
+        FROM   [dbo].[DeadlockStaging]
         
 OPEN my_cursor   
 FETCH NEXT FROM my_cursor INTO @deadlock_timestamp
@@ -81,9 +82,9 @@ WHILE @@FETCH_STATUS = 0
 BEGIN
 --------------------------------------------------------------------------
         
-        TRUNCATE TABLE [#DMSSR_Deadlock_detection.xel]
+        TRUNCATE TABLE [#DeadlockStaging]
         
-        INSERT INTO [#DMSSR_Deadlock_detection.xel] 
+        INSERT INTO [#DeadlockStaging] 
             (
                 [name]                       
                ,[timestamp]                  
@@ -115,60 +116,61 @@ BEGIN
                ,[server_name]         
             )
 
-            SELECT 
-                 [name]                       
-                ,[timestamp]                  
-                ,[timestamp (UTC)]            
-                ,[resource_type]              
-                ,[mode]                       
-                ,[owner_type]                 
-                ,[transaction_id]             
-                ,[database_id]                
-                ,[lockspace_workspace_id]     
-                ,[lockspace_sub_id]           
-                ,[lockspace_nest_id]          
-                ,[resource_0]                 
-                ,[resource_1]                 
-                ,[resource_2]                 
-                ,[deadlock_id]                
-                ,[object_id]                  
-                ,[associated_object_id]       
-                ,[session_id]                 
-                ,[resource_owner_type]        
-                ,[resource_description]       
-                ,[database_name]              
-                ,[username]                   
-                ,[nt_username]                
-                ,[duration]                   
-                ,[sql_text]
-                ,[xml_report]          
-                ,[deadlock_cycle_id]   
-                ,[server_name]         
+        SELECT 
+             [name]                       
+            ,[timestamp]                  
+            ,[timestamp (UTC)]            
+            ,[resource_type]              
+            ,[mode]                       
+            ,[owner_type]                 
+            ,[transaction_id]             
+            ,[database_id]                
+            ,[lockspace_workspace_id]     
+            ,[lockspace_sub_id]           
+            ,[lockspace_nest_id]          
+            ,[resource_0]                 
+            ,[resource_1]                 
+            ,[resource_2]                 
+            ,[deadlock_id]                
+            ,[object_id]                  
+            ,[associated_object_id]       
+            ,[session_id]                 
+            ,[resource_owner_type]        
+            ,[resource_description]       
+            ,[database_name]              
+            ,[username]                   
+            ,[nt_username]                
+            ,[duration]                   
+            ,[sql_text]
+            ,[xml_report]          
+            ,[deadlock_cycle_id]   
+            ,[server_name]         
             
-            FROM dbo.[DMSSR_Deadlock_Detection_SSISDB.xel] 
-            WHERE CONVERT(DATETIME2(0), [timestamp]) = @deadlock_timestamp
+        FROM dbo.[DeadlockStaging] 
+        WHERE CONVERT(DATETIME2(0), [timestamp]) = @deadlock_timestamp
         SELECT @rowcount = @@ROWCOUNT
 
         PRINT(CONCAT(@deadlock_timestamp, ' ', @counter, ' Rowcount: ', @rowcount))
+        
         IF (@rowcount > 0)
         BEGIN
-            IF (SELECT COUNT(DISTINCT deadlock_id) FROM [#DMSSR_Deadlock_detection.xel]) = 1
+            IF (SELECT COUNT(DISTINCT deadlock_id) FROM [#DeadlockStaging]) = 1
             BEGIN
-                SELECT @deadlock_id = deadlock_id FROM [#DMSSR_Deadlock_detection.xel] WHERE deadlock_id > 0
+                SELECT @deadlock_id = deadlock_id FROM [#DeadlockStaging] WHERE deadlock_id > 0
             END
             ----------------------------------------------------------------------------------------------------------
-            DECLARE my_cursor_int CURSOR FOR
+            DECLARE xml_report_cursor CURSOR FOR
             
                                 SELECT CAST(xml_report AS XML) 
-                                FROM dbo.[#DMSSR_Deadlock_detection.xel]
+                                FROM dbo.[#DeadlockStaging]
                                 WHERE xml_report IS NOT NULL
 
-            OPEN my_cursor_int   
-            FETCH NEXT FROM my_cursor_int INTO @xml_report  
+            OPEN xml_report_cursor   
+            FETCH NEXT FROM xml_report_cursor INTO @xml_report  
             WHILE @@FETCH_STATUS = 0   
                     BEGIN
 
-							MERGE [dbo].[DMSSR_Deadlock_Fact_SSISDB] AS trg
+							MERGE [dbo].[DeadlockFact] AS trg
 							USING (
 									SELECT
                                                 [DeadlockID] = COALESCE(@deadlock_id, 0),
@@ -270,11 +272,11 @@ BEGIN
 								          , src.[WaitResource_2]
 								          , src.[XmReport] );
 
-                    FETCH NEXT FROM my_cursor_int INTO @xml_report  
+                    FETCH NEXT FROM xml_report_cursor INTO @xml_report  
                     END   
 
-            CLOSE my_cursor_int  
-            DEALLOCATE my_cursor_int
+            CLOSE xml_report_cursor  
+            DEALLOCATE xml_report_cursor
             ----------------------------------------------------------------------------------------------------------
         END
         SET @counter = @counter + 1
@@ -286,3 +288,4 @@ DEALLOCATE my_cursor
 ----------------------------------
 
 
+SELECT * FROM dbo.DeadlockFact ORDER BY DeadlockTime DESC

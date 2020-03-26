@@ -1,3 +1,8 @@
+USE DeadlockHistory
+GO
+
+
+
 DECLARE 
         @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection*.xel'
         , @XmlData XML
