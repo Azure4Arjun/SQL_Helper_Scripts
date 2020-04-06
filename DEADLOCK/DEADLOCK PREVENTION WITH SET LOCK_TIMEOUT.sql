@@ -8,7 +8,6 @@ GO
 
 
 CREATE OR ALTER PROCEDURE [dbo].[sp_YourProcNameHere]
-
 AS
 
 -- =============================================
@@ -28,7 +27,6 @@ BEGIN
         ,@@PROCNAME VARCHAR(255) 
         ,@@USERNAME VARCHAR(32)
 
-		,@ErrorProcedure SYSNAME 
 		,@ErrorNumber	INT 
 		,@ErrorSeverity	INT 
 		,@ErrorState	INT 
@@ -74,12 +72,12 @@ BEGIN
 					AND @counter <= @attempt_threshold)
 			        BEGIN
 			                SET @counter = @counter + 1 -- increment the timeout counter
-                            SELECT   @ErrorProcedure	= ERROR_PROCEDURE() 
-				            		,@ErrorNumber	    = ERROR_NUMBER() 
+                            SELECT   
+				            		 @ErrorNumber	    = ERROR_NUMBER() 
 				            		,@ErrorSeverity     = ERROR_SEVERITY() 
 				            	    ,@ErrorState	    = ERROR_STATE() 
 				            	    ,@ErrorLine		    = ERROR_LINE() 
-				            	    ,@ErrorMessage	    = ERROR_MESSAGE() 
+				            	    ,@ErrorMessage	    = COALESCE(ERROR_MESSAGE(), 'Unknown') + CHAR(13)
 
 							SELECT @@PROCNAME = ISNULL(OBJECT_NAME(@@PROCID), 'Unknown Procedure')  
 							SELECT @@USERNAME = USER_NAME();  
@@ -100,22 +98,15 @@ BEGIN
 			  END
 
 			BEGIN
-            	SELECT   @ErrorProcedure	= ERROR_PROCEDURE() 
-						,@ErrorNumber	    = ERROR_NUMBER() 
-						,@ErrorSeverity     = ERROR_SEVERITY() 
-					    ,@ErrorState	    = ERROR_STATE() 
-					    ,@ErrorLine		    = ERROR_LINE() 
-					    ,@ErrorMessage	    = ERROR_MESSAGE() 
 
-
-				SET @ErrMsg = 'Error executing: ' + COALESCE(OBJECT_NAME(@@PROCID), 'Unknown') + CHAR(13) 
-					+ 'Error Procedure: ' + COALESCE(ERROR_PROCEDURE(), 'Unknown')
-					+ ', Error Number: ' + CAST(ERROR_NUMBER() AS VARCHAR)
-					+ ', Error Severity: ' + CAST(ERROR_SEVERITY() AS VARCHAR)
-					+ ', Error State: ' + CAST(ERROR_STATE() AS VARCHAR)
-					+ ', Error Line: ' + CAST(ERROR_LINE() AS VARCHAR)
-					+ ', Error Message: ' + COALESCE(ERROR_MESSAGE(), 'Unknown') + CHAR(13)
-					+ ', Server Name: ' + @@SERVERNAME + ' - Database: ' + DB_NAME() + ', User: ' + SUSER_NAME() + ', SPID: ' + CAST(@@SPID AS VARCHAR) + ', Now: ' + CAST(GETDATE() AS VARCHAR(121));
+				SET @ErrMsg = 'Error executing: '   + COALESCE(OBJECT_NAME(@@PROCID), 'Unknown') + CHAR(13) 
+					+ 'Error Procedure: '           + COALESCE(ERROR_PROCEDURE(), 'Unknown')
+					+ ', Error Number: '            + CAST(ERROR_NUMBER() AS VARCHAR)
+					+ ', Error Severity: '          + CAST(ERROR_SEVERITY() AS VARCHAR)
+					+ ', Error State: '             + CAST(ERROR_STATE() AS VARCHAR)
+					+ ', Error Line: '              + CAST(ERROR_LINE() AS VARCHAR)
+					+ ', Error Message: '           + COALESCE(ERROR_MESSAGE(), 'Unknown') + CHAR(13)
+					+ ', Server Name: '             + @@SERVERNAME + ' - Database: ' + DB_NAME() + ', User: ' + SUSER_NAME() + ', SPID: ' + CAST(@@SPID AS VARCHAR) + ', Now: ' + CAST(GETDATE() AS VARCHAR(121));
 				
 				SET @attempt_nr_str = CONVERT(NVARCHAR(2), @counter)
 			    SET @ErrMsg = CONCAT(@ErrMsg, ' ', @CustomErrorMessage)
