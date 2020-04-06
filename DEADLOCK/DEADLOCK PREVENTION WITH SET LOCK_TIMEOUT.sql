@@ -74,6 +74,12 @@ BEGIN
 					AND @counter <= @attempt_threshold)
 			        BEGIN
 			                SET @counter = @counter + 1 -- increment the timeout counter
+                            SELECT   @ErrorProcedure	= ERROR_PROCEDURE() 
+				            		,@ErrorNumber	    = ERROR_NUMBER() 
+				            		,@ErrorSeverity     = ERROR_SEVERITY() 
+				            	    ,@ErrorState	    = ERROR_STATE() 
+				            	    ,@ErrorLine		    = ERROR_LINE() 
+				            	    ,@ErrorMessage	    = ERROR_MESSAGE() 
 
 							SELECT @@PROCNAME = ISNULL(OBJECT_NAME(@@PROCID), 'Unknown Procedure')  
 							SELECT @@USERNAME = USER_NAME();  
