@@ -54,7 +54,7 @@ BEGIN
         COMMIT TRAN;
         SELECT @@PROCNAME = ISNULL(OBJECT_NAME(@@PROCID), 'Unknown Procedure')
 		SELECT @@MESSAGE = 'Procedure ' + @@PROCNAME + ' executed successfully! '
-		EXEC xp_logevent 60000, @@MESSAGE, informational; 
+		EXEC xp_logevent 60000, @@MESSAGE, informational WITH RESULT SETS NONE; 
 		SET @is_success = 1 -- transaction succeeded, so exit the try-block and the while-loop
 ----------------------------------------------------------------------------------------------  
 	END TRY
@@ -85,7 +85,7 @@ BEGIN
                                             +', with message: '                   +@ErrorMessage;    
 
 							PRINT(@@MESSAGE)
-                            EXEC xp_logevent 60000, @@MESSAGE, informational; 
+                            EXEC xp_logevent 60000, @@MESSAGE, informational WITH RESULT SETS NONE; 
 			                WAITFOR DELAY '00:01:00'
 					END
 			ELSE
