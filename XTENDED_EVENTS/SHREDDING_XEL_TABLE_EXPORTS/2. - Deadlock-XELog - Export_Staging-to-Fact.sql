@@ -1,37 +1,37 @@
-USE DeadlockHistory
+USE DBAAdmin
 GO
 
 SET NOCOUNT ON
 GO
 
-DROP TABLE IF EXISTS [dbo].[DeadlockFact];
-GO
+--DROP TABLE IF EXISTS [dbo].[DeadlockFact];
+--GO
 
-CREATE TABLE [dbo].[DeadlockFact] (    
-      [DeadlockID] BIGINT NOT NULL
-	, [DeadlockTime] DATETIME NOT NULL
-    , [TransactionTime] DATETIME NULL
-    , [LastBatchStarted] DATETIME NULL
-    , [LastBatchCompleted] DATETIME NULL
-    , [PagelockObject] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [DeadlockObject] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [KeyLockObject] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [KeyLockIndex] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [IsVictim] INT NOT NULL
-    , [ProcessID] VARCHAR(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-    , [Procedure] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [LockMode] CHAR(5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [SqlCode] VARCHAR(1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [HostName] VARCHAR(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [LoginName] VARCHAR(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [InputBuffer] VARCHAR(1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [DatabaseName_1] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [DatabaseName_2] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [WaitResource_1] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [WaitResource_2] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-    , [xml_report] XML NULL
-)
-GO
+--CREATE TABLE [dbo].[DeadlockFact] (    
+--      [DeadlockID] BIGINT NOT NULL
+--	  , [DeadlockTime] DATETIME NOT NULL
+--    , [TransactionTime] DATETIME NULL
+--    , [LastBatchStarted] DATETIME NULL
+--    , [LastBatchCompleted] DATETIME NULL
+--    , [PagelockObject] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [DeadlockObject] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [KeyLockObject] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [KeyLockIndex] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [IsVictim] INT NOT NULL
+--    , [ProcessID] VARCHAR(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+--    , [Procedure] VARCHAR(200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [LockMode] CHAR(5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [SqlCode] VARCHAR(1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [HostName] VARCHAR(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [LoginName] VARCHAR(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [InputBuffer] VARCHAR(1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [DatabaseName_1] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [DatabaseName_2] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [WaitResource_1] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [WaitResource_2] VARCHAR(500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+--    , [xml_report] XML NULL
+--)
+--GO
 
 
 DROP TABLE IF EXISTS [#DeadlockStaging]
@@ -288,4 +288,4 @@ DEALLOCATE my_cursor
 ----------------------------------
 
 
-SELECT * FROM dbo.DeadlockFact ORDER BY DeadlockTime DESC
+SELECT TOP 100 * FROM dbo.DeadlockFact ORDER BY DeadlockTime DESC

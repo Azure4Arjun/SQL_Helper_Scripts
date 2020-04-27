@@ -1,10 +1,8 @@
-USE DeadlockHistory
+USE DBAAdmin
 GO
 
-
-
 DECLARE 
-        @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection*.xel'
+        @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection_0_132315915952740000.xel'
         , @XmlData XML
         , @ObjectName VARCHAR(128)
 
@@ -38,37 +36,45 @@ DECLARE
 , @duration	                    DECIMAL(20)
 , @sql_text	                    NVARCHAR(1024)
 -----------------------------------------
-DROP TABLE IF EXISTS [dbo].[DeadlockStaging]
-CREATE TABLE [dbo].[DeadlockStaging] (
-	[name]                      NVARCHAR(1024) NULL,
-	[timestamp]                 DATETIMEOFFSET(7) NULL,
-	[timestamp (UTC)]           DATETIMEOFFSET(7) NULL,
-	[resource_type]             NVARCHAR(1024) NULL,
-	[mode]                      NVARCHAR(1024) NULL,
-	[owner_type]                NVARCHAR(1024) NULL,
-	[transaction_id]            BIGINT NULL,
-	[database_id]               BIGINT NULL,
-	[lockspace_workspace_id]    DECIMAL(20, 0) NULL,
-	[lockspace_sub_id]          BIGINT NULL,
-	[lockspace_nest_id]         BIGINT NULL,
-	[resource_0]                BIGINT NULL,
-	[resource_1]                BIGINT NULL,
-	[resource_2]                BIGINT NULL,
-	[deadlock_id]               BIGINT NULL,
-	[object_id]                 INT NULL,
-	[associated_object_id]      DECIMAL(20, 0) NULL,
-	[session_id]                SMALLINT NULL,
-	[resource_owner_type]       NVARCHAR(1024) NULL,
-	[resource_description]      NVARCHAR(1024) NULL,
-	[database_name]             NVARCHAR(1024) NULL,
-	[username]                  NVARCHAR(1024) NULL,
-	[nt_username]               NVARCHAR(1024) NULL,
-	[xml_report]                XML NULL,
-	[deadlock_cycle_id]         DECIMAL(20, 0) NULL,
-	[server_name]               NVARCHAR(1024) NULL,
-	[duration]                  DECIMAL(20, 0) NULL,
-	[sql_text]                  NVARCHAR(1024) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+--DROP TABLE IF EXISTS [dbo].[DeadlockStaging]
+--CREATE TABLE [dbo].[DeadlockStaging] (
+--	[name]                      NVARCHAR(1024) NULL,
+--	[timestamp]                 DATETIMEOFFSET(7) NULL,
+--	[timestamp (UTC)]           DATETIMEOFFSET(7) NULL,
+--	[resource_type]             NVARCHAR(1024) NULL,
+--	[mode]                      NVARCHAR(1024) NULL,
+--	[owner_type]                NVARCHAR(1024) NULL,
+--	[transaction_id]            BIGINT NULL,
+--	[database_id]               BIGINT NULL,
+--	[lockspace_workspace_id]    DECIMAL(20, 0) NULL,
+--	[lockspace_sub_id]          BIGINT NULL,
+--	[lockspace_nest_id]         BIGINT NULL,
+--	[resource_0]                BIGINT NULL,
+--	[resource_1]                BIGINT NULL,
+--	[resource_2]                BIGINT NULL,
+--	[deadlock_id]               BIGINT NULL,
+--	[object_id]                 INT NULL,
+--	[associated_object_id]      DECIMAL(20, 0) NULL,
+--	[session_id]                SMALLINT NULL,
+--	[resource_owner_type]       NVARCHAR(1024) NULL,
+--	[resource_description]      NVARCHAR(1024) NULL,
+--	[database_name]             NVARCHAR(1024) NULL,
+--	[username]                  NVARCHAR(1024) NULL,
+--	[nt_username]               NVARCHAR(1024) NULL,
+--	[xml_report]                XML NULL,
+--	[deadlock_cycle_id]         DECIMAL(20, 0) NULL,
+--	[server_name]               NVARCHAR(1024) NULL,
+--	[duration]                  DECIMAL(20, 0) NULL,
+--	[sql_text]                  NVARCHAR(1024) NULL
+--) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+TRUNCATE TABLE [dbo].[DeadlockStaging]
+
+-- to do:
+-- create a temp table with rownumber and dump contents of the cursor below into that temp table 
+-- then run the cursor below on the temp table instead of the sys.fn_xe_file_target_read_file 
+-- and by each iteration print out the progress % (which row is beeing processed out of how many)
+-- otherwise by big .xel files there is no indication of how much longer the processing would take
 
 DECLARE my_cursor CURSOR FOR 
     SELECT
@@ -107,7 +113,7 @@ END
 --============================================================================
 
 --------------------------------------------------------------------------
--- Populate Deadlock-XE-Dump table:
+-- Populate Deadlock-XE-Staging table:
 --------------------------------------------------------------------------
 SELECT @resource_type           = k.value('text[1]','VARCHAR(1024)')    FROM @XmlData.nodes('/event/data')                 p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'resource_type'
 SELECT @mode                    = k.value('text[1]','VARCHAR(1024)')    FROM @XmlData.nodes('/event/data')                 p(k) WHERE (k.value('@name','VARCHAR(1024)')) = 'mode'
