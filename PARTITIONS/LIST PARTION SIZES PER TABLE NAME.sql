@@ -22,7 +22,7 @@ SELECT
 	  ,  pst.partition_number                       AS [Part.Number]
 	  ,  pst.row_count                              AS [PartitionRowCount]
       ,  au.total_pages                             AS [AU Total Pages]
-	  ,  STR((au.total_pages)*8./1024,10,2)         AS [UsedMB]
+      ,  STR((au.total_pages)*8./1024,10,2)         AS [UsedMB]
 	  ,  p.data_compression_desc                    AS [DataCompression]
 FROM 
             sys.dm_db_partition_stats               AS pst
@@ -31,7 +31,7 @@ INNER JOIN  sys.destination_data_spaces             AS dds  ON pst.partition_num
 INNER JOIN  sys.data_spaces                         AS ds   ON dds.data_space_id = ds.data_space_id
 INNER JOIN  sys.partition_schemes                   AS ps   ON dds.partition_scheme_id = ps.data_space_id
 INNER JOIN  sys.partition_functions                 AS pf   ON ps.function_id = pf.function_id
-INNER JOIN  sys.indexes                             AS ix   ON pst.object_id = ix.object_id AND pst.index_id = ix.index_id AND dds.partition_scheme_id = ix.data_space_id AND ix.type <= 1 /* Heap or Clustered Index */
+INNER JOIN  sys.indexes                             AS ix   ON pst.object_id = ix.object_id AND pst.index_id = ix.index_id AND dds.partition_scheme_id = ix.data_space_id AND ix.type <= 6 /* Heap or Clustered Index or Columnstore */
 ---------------------
 INNER JOIN  sys.objects                             AS o    ON p.object_id       = o.object_id
 INNER JOIN  sys.system_internals_allocation_units   AS au   ON p.partition_id    = au.container_id
@@ -41,6 +41,6 @@ INNER JOIN  sys.index_columns                       AS ic   ON ix.index_id = ic.
 INNER JOIN  sys.columns                             AS col  ON pst.object_id = col.object_id AND ic.column_id = col.column_id
 LEFT JOIN   sys.partition_range_values              AS prv  ON pf.function_id = prv.function_id AND pst.partition_number = (CASE pf.boundary_value_on_right WHEN 0 THEN prv.boundary_id ELSE (prv.boundary_id+1) END)
 WHERE 1 = 1
---AND     pst.object_id = OBJECT_ID('[YourTableName]')
-AND     pst.row_count > 0
+AND     pst.object_id = OBJECT_ID('TableName')
+--AND     pst.row_count > 0
 ORDER BY [TableName], [Part.Number];
