@@ -1,4 +1,4 @@
-Create Table ##temp
+CREATE Table ##temp
 (
     DatabaseName sysname,
     Name sysname,
@@ -23,9 +23,9 @@ SELECT --*
 	,FreeSpace as [DB Free Space in MB] 
 
 FROM ##temp
-WHERE 
-DatabaseName IN ('ACIA_DWH') AND 
-physical_name LIKE 'F:\%'
+WHERE 1 = 1
+    AND DatabaseName IN ('DbName') 
+    AND physical_name LIKE 'F:\%'
 ORDER BY FreeSpace DESC, DatabaseName --[DB Size in MB] DESC
 
 DROP TABLE ##temp
