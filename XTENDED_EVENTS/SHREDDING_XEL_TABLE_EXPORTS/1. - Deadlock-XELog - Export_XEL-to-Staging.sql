@@ -2,7 +2,7 @@ USE DBAAdmin
 GO
 
 DECLARE 
-        @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection_0_132315915952740000.xel'
+        @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection_0_132321099362410000.xel'    --Deadlock detection_0_132315915952740000.xel'
         , @XmlData XML
         , @ObjectName VARCHAR(128)
 
@@ -72,7 +72,7 @@ TRUNCATE TABLE [dbo].[DeadlockStaging]
 
 -- to do:
 -- create a temp table with rownumber and dump contents of the cursor below into that temp table 
--- then run the cursor below on the temp table instead of the sys.fn_xe_file_target_read_file 
+-- then run the cursor below on that temp table instead of the sys.fn_xe_file_target_read_file 
 -- and by each iteration print out the progress % (which row is beeing processed out of how many)
 -- otherwise by big .xel files there is no indication of how much longer the processing would take
 
