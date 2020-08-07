@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SQL_DeadlockCollector", "SQL_DeadlockCollector\SQL_DeadlockCollector.sqlproj", "{B0211584-2536-42EE-84E4-4B28C23C12C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{94E4B974-72B1-474A-9CB9-77472F9E60C4}"
+EndProject
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Deadlock-Collector-Reports", "Deadlock-Collector-Reports\Deadlock-Collector-Reports.rptproj", "{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs17
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Deadlock-Collector-Reports\\Deadlock-Collector-Reports.rptproj
+		SccProjectName1 = Deadlock-Collector-Reports
+		SccLocalPath1 = Deadlock-Collector-Reports
+		SccProjectUniqueName2 = SQL_DeadlockCollector\\SQL_DeadlockCollector.sqlproj
+		SccProjectName2 = SQL_DeadlockCollector
+		SccLocalPath2 = SQL_DeadlockCollector
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugLocal|Any CPU = DebugLocal|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.DebugLocal|Any CPU.Deploy.0 = Debug|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0211584-2536-42EE-84E4-4B28C23C12C1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.Debug|Any CPU.ActiveCfg = Debug
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.Debug|Any CPU.Build.0 = Debug
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.Debug|Any CPU.Deploy.0 = Debug
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.DebugLocal|Any CPU.ActiveCfg = DebugLocal
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.DebugLocal|Any CPU.Build.0 = DebugLocal
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.Release|Any CPU.ActiveCfg = Release
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.Release|Any CPU.Build.0 = Release
+		{D776AD1B-80B0-46C9-BE0D-6F65CDA1F130}.Release|Any CPU.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

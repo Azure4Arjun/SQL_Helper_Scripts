@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# SQL Server Management Studio Solution File, Format Version 11.00
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "Deadlock Collector", "Deadlock Collector.ssmssqlproj", "{11B28C4F-BA0E-4C11-80DA-40A03ED1B8AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Default = Default|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11B28C4F-BA0E-4C11-80DA-40A03ED1B8AE}.Default|Default.ActiveCfg = Default
+		{831A8AB0-8D11-41C8-9ED8-CE043A843EAF}.Default|Default.ActiveCfg = Default
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
