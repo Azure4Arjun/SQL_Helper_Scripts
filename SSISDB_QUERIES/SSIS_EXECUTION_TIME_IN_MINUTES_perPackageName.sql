@@ -1,7 +1,8 @@
 USE SSISDB
 GO
 
-DECLARE @PackageName NVARCHAR(256) = 'PackageName.dtsx'
+DECLARE @PackageName NVARCHAR(256) = 'Package.dtsx'
+--'REF_ACQ_Customer_IE001.dtsx'
 DECLARE @DateSince DATE = GETDATE() - 30
 
 SELECT
@@ -39,6 +40,8 @@ LEFT JOIN      [SSISDB].catalog.execution_property_override_values ov WITH (NOLO
 
 WHERE
         ei.package_name = @PackageName AND
+        --IN ('Package1.dtsx', 'Package2.dtsx') AND 
+        
         ei.start_time >= @DateSince
 
 ORDER BY ei.start_time DESC

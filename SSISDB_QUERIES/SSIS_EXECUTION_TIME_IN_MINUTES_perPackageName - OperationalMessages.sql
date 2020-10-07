@@ -38,8 +38,8 @@ INNER JOIN          [SSISDB].[internal].[executions] (NOLOCK) AS E ON OM.Operati
 WHERE 1 = 1
 AND                 O.Operation_Id = @Operation_Id
 AND                 O.start_time >= @DateSince
-AND                 EM.Package_Name = @PackageName 
-AND                 OM.[message] LIKE @ProcName
+--AND                 EM.Package_Name = @PackageName 
+--AND                 OM.[message] LIKE @ProcName
 
 ORDER BY 
             O.operation_id DESC, OM.operation_message_id DESC

@@ -2,7 +2,7 @@ USE DBAAdmin
 GO
 
 DECLARE 
-        @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection_0_132321099362410000.xel'    --Deadlock detection_0_132315915952740000.xel'
+        @XtendedEventFilePath NVARCHAR(256) = 'F:\MSSQL\Log\Deadlock detection_0_132423280236840000.xel'    --Deadlock detection_0_132315915952740000.xel'
         , @XmlData XML
         , @ObjectName VARCHAR(128)
 
