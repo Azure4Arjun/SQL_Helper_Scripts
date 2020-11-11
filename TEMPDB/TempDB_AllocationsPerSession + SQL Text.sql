@@ -1,3 +1,12 @@
+USE [tempdb]
+GO
+    
+SELECT SUM(unallocated_extent_page_count) AS [free pages], 
+(SUM(unallocated_extent_page_count)*1.0/128) AS [free space in MB]
+FROM sys.dm_db_file_space_usage;
+
+
+
 SELECT 
 	es.session_id,
 	es.login_name AS 'LoginName',
@@ -29,13 +38,11 @@ WHERE
 	DB_NAME(ssu.database_id) = 'tempdb'
 	AND es.session_id <> @@SPID
 	AND es.login_name NOT IN ('sa')
+    AND es.session_id = 118
 ORDER BY
 	[Internal Objects Not-released (in KB)] DESC
 	--[User Objects Not-released (in KB)] DESC,
 	--es.total_scheduled_time DESC
 
-/*
-SELECT SUM(unallocated_extent_page_count) AS [free pages], 
-(SUM(unallocated_extent_page_count)*1.0/128) AS [free space in MB]
-FROM sys.dm_db_file_space_usage;
-*/
+
+
