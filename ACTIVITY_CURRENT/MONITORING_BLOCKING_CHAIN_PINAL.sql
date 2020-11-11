@@ -35,3 +35,16 @@ GO
 DROP TABLE #T
 GO
 
+USE DBAAdmin
+GO
+
+
+DECLARE @schema VARCHAR(MAX);
+EXEC dbo.sp_WhoIsActive
+
+@find_block_leaders = 1
+,@sort_order = '[blocked_session_count] DESC'
+,@show_sleeping_spids = 1
+,@filter_type = 'login'
+,@filter = 'WHGROUP\mgrzymala'
+,@get_plans = 1
