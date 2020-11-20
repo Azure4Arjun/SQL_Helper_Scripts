@@ -42,9 +42,13 @@ GO
 DECLARE @schema VARCHAR(MAX);
 EXEC dbo.sp_WhoIsActive
 
-@find_block_leaders = 1
+ @find_block_leaders = 1
 ,@sort_order = '[blocked_session_count] DESC'
 ,@show_sleeping_spids = 1
-,@filter_type = 'login'
-,@filter = 'WHGROUP\mgrzymala'
 ,@get_plans = 1
+,@get_outer_command = 2
+,@get_transaction_info = 2 -- bit
+,@get_additional_info = 2 
+
+,@filter_type = 'login'
+,@filter = 'DOMAIN\username'
