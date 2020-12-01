@@ -1,7 +1,7 @@
 USE SSISDB
 GO
 
-DECLARE @PackageName NVARCHAR(256) = 'PackageName.dtsx'
+DECLARE @PackageName NVARCHAR(256) = 'REF_DDF_Blacklist_OpenbetOutbound.dtsx' --'REF_DDF_Blacklist_OpenbetOutbound_ES.dtsx'  ----'REF_DDF_Blacklist_OpenbetOutbound_ES.dtsx' --'REF_DDF_Blacklist_OpenbetOutbound_IT.dtsx' --  --
 DECLARE @DateSince DATE = GETDATE() - 30
 
 SELECT
@@ -25,8 +25,7 @@ SELECT
     END AS [Status],
     DATEDIFF(SECOND, ei.start_time, ei.end_time)    AS [execution_time (sec)],
     DATEDIFF(MINUTE, ei.start_time, ei.end_time)    AS [execution_time (min)],
-    fn1.OperationsCount,
-    fn2.DistinctCountOperationMessageIds,
+    fn.CountOfOperationMessageEntries,
     ei.environment_folder_name,
     ei.environment_name,
     ei.executed_as_name,
@@ -39,22 +38,13 @@ SELECT
 
 FROM           [SSISDB].internal.execution_info ei WITH (NOLOCK)
 LEFT JOIN      [SSISDB].catalog.execution_property_override_values ov WITH (NOLOCK)  ON ov.execution_id = ei.execution_id
+
 CROSS APPLY (
                 SELECT 
-                            COUNT_BIG(o.operation_id) AS [OperationsCount]
-                FROM        [SSISDB].[internal].[operations] (NOLOCK) AS o
-                INNER JOIN  [SSISDB].[internal].[event_messages] (NOLOCK) AS em ON em.operation_id = o.operation_id
-                INNER JOIN  [SSISDB].[internal].[operation_messages] (NOLOCK) AS om ON em.operation_id = om.operation_id
-                WHERE       o.operation_id = ei.execution_id
-            ) AS fn1
-CROSS APPLY (
-                SELECT 
-                            COUNT_BIG(DISTINCT om.operation_message_id) AS [DistinctCountOperationMessageIds]
-                FROM        [SSISDB].[internal].[operations] (NOLOCK) AS o
-                INNER JOIN  [SSISDB].[internal].[event_messages] (NOLOCK) AS em ON em.operation_id = o.operation_id
-                INNER JOIN  [SSISDB].[internal].[operation_messages] (NOLOCK) AS om ON em.operation_id = om.operation_id
-                WHERE       o.operation_id = ei.execution_id
-            ) AS fn2
+                            COUNT_BIG(om.operation_message_id) AS [CountOfOperationMessageEntries]
+                FROM        [SSISDB].[internal].[operation_messages] om
+                WHERE       om.operation_id = ei.execution_id
+            ) AS fn
 WHERE
         ei.package_name = @PackageName AND
         /*
@@ -65,6 +55,3 @@ WHERE
         ei.start_time >= @DateSince
 
 ORDER BY ei.start_time DESC
-
---SELECT COUNT(DISTINCT om.operation_message_id) FROM [SSISDB].[internal].[operation_messages] om WHERE om.operation_id = 11357424
-

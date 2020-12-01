@@ -1,6 +1,6 @@
 --DECLARE @JobName NVARCHAR(256) = 'YourJobName%'
 --DECLARE @ProxyName NVARCHAR(256) = 'YourProxyName'
-DECLARE @CommandContents NVARCHAR(256) = '%command inside your job%'
+DECLARE @CommandContents NVARCHAR(256) = '%command_inside_your_job%'
 
 
 ;WITH CTE1 AS (

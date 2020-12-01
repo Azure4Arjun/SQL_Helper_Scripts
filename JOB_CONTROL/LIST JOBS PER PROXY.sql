@@ -50,6 +50,7 @@ SELECT
 FROM        CTE1 C1
 WHERE       
             C1.[IsEnabled] = 1
-AND         C1.JobName LIKE @JobName AND C1.ProxyName = @ProxyName -- IS NOT NULL
+AND         C1.JobName LIKE @JobName 
+AND         C1.ProxyName = @ProxyName -- IS NOT NULL
 --AND         C1.command LIKE '%command contents%'
 ORDER BY    C1.job_id, C1.step_id
